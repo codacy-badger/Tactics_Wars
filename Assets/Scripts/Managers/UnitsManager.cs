@@ -10,7 +10,10 @@ public class UnitsManager : MonoBehaviour
         foreach (Entity entity in entities)
         {
             Node node = Grid.Instance.GetNode(entity.transform.position);
-            node.AddEntity(entity);
+            if (node != null)
+            {
+                node.AddEntity(entity);
+            }
         }
     }
 }

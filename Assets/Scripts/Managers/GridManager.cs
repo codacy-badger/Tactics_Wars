@@ -8,13 +8,14 @@ class GridManager : MonoBehaviour
     
     [Header("Grid Settings")]
     [SerializeField]
-    private int _width;
+    private Transform _bottomLeft;
     [SerializeField]
-    private int _height;
+    private Transform _topRight;
     [SerializeField]
     private int _cellSize;
-    [SerializeField]
-    private Transform _startPoint;
+    
+    private int _width;
+    private int _height;
 
     [Header("Tilemaps Settings")]
     [SerializeField]
@@ -34,7 +35,10 @@ class GridManager : MonoBehaviour
 
     private void Start()
     {
-        Grid.Instance = new Grid(_width, _height, _cellSize, _startPoint.position);
+        _width = (int) Mathf.Abs(_bottomLeft.position.x - _topRight.position.x);
+        _height = (int)Mathf.Abs(_bottomLeft.position.y - _topRight.position.y);
+
+        Grid.Instance = new Grid(_width, _height, _cellSize, _bottomLeft.position);
         InitializeNodes();
         _onGridInitialized.Raise();
     }

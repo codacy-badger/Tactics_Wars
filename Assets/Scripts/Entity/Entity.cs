@@ -27,8 +27,3 @@ public enum TeamEnum
     BLUE = 0,
     RED = 1
 }
-
-public enum EntityType
-{ 
-
-}
