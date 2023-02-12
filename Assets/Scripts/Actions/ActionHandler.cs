@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class ActionHandler
 {
-    public IAction ActionToHandle { get; set; }
+    public BaseAction ActionToHandle { get; set; }
 
     public void ExecuteCommand()
     {
         ActionToHandle.Execute();
-    }
-
-    public void ShowInfoCommand()
-    {
-        ActionToHandle.ShowActionInfo();
     }
 }

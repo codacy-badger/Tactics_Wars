@@ -35,12 +35,17 @@ class GridManager : MonoBehaviour
 
     private void Start()
     {
-        _width = (int) Mathf.Abs(_bottomLeft.position.x - _topRight.position.x);
+        InitializeGrid();
+        InitializeNodes();
+        _onGridInitialized.Raise();
+    }
+
+    private void InitializeGrid()
+    {
+        _width = (int)Mathf.Abs(_bottomLeft.position.x - _topRight.position.x);
         _height = (int)Mathf.Abs(_bottomLeft.position.y - _topRight.position.y);
 
         Grid.Instance = new Grid(_width, _height, _cellSize, _bottomLeft.position);
-        InitializeNodes();
-        _onGridInitialized.Raise();
     }
 
     private void InitializeNodes()
@@ -57,13 +62,15 @@ class GridManager : MonoBehaviour
 
                 if (wallTile != null)
                     node.IsWall = true;
-                else if(resourceTile != null)
+                else if (resourceTile != null)
                 {
                     if (resourceTile.Equals(_goldResource.ResourceTile))
                         node.Resource = _goldResource;
                     else if (resourceTile.Equals(_foodResource.ResourceTile))
                         node.Resource = _foodResource;
                 }
+
+                Grid.Instance.SetNodesNeighbours();
             }
         }
     }

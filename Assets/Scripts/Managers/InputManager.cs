@@ -1,101 +1,82 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    #region Variables
+    [Header("Actions Settings")]
+    [SerializeField]
+    private int _movementSpeed = 1;
+
     [Header("Game Events")]
     [SerializeField]
     private UnitEvent _onUnitSelectedEvent;
     [SerializeField]
     private VoidEvent _onEntityDeselectedEvent;
+    [SerializeField]
+    private ListVector3Event _updateActionAreaEvent;
+    [SerializeField]
+    private ListVector3Event _updateMovementArrowEvent;
 
-    private ActionHandler _actionHandler;
+    [SerializeField]
     private Unit _selectedUnit;
 
-    InputBaseState _currentState;
-    [HideInInspector]
-    public InputNoActionState NoActionState = new InputNoActionState();
-    [HideInInspector]
-    public InputMoveState MoveState = new InputMoveState();
-    [HideInInspector]
-    public InputAttackState AttackState = new InputAttackState();
+    private ActionHandler _actionHandler;
+    private InputBaseState _currentState;
+    private InputStateFactory _states;
+    #endregion
 
-    [Header("Debug State Settings")]
-    public bool ChangeNoActionState;
-    public bool ChangeMoveState;
-    public bool ChangeAttackState;
+    #region Getters and Setters
+    public int MovementSpeed { get { return _movementSpeed; } }
+    public Unit SelectedUnit { get { return _selectedUnit; } set { _selectedUnit = value; } }
+    public UnitEvent OnUnitSelectedEvent { get { return _onUnitSelectedEvent; } }
+    public VoidEvent OnEntityDeselectedEvent { get { return _onEntityDeselectedEvent; } }
+    public ListVector3Event UpdateActionAreaEvent { get { return _updateActionAreaEvent; } }
+    public ListVector3Event UpdateMovementArrowEvent { get { return _updateMovementArrowEvent; } }
+    public InputBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+    //public InputStateFactory States { get { return _states; } set { _states = value; } }
+    public ActionHandler ActionHandler { get { return _actionHandler; } set { _actionHandler = value; } }
+    #endregion
 
     void Start()
     {
         _actionHandler = new ActionHandler();
-        _currentState = NoActionState;
-        _currentState.EnterState(this);
+        _states = new InputStateFactory(this);
+        _currentState = _states.NoAction();
+        _currentState.EnterState();
     }
 
     void Update()
     {
-        _currentState.UpdateState(this);
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 mousePosition = GetMouseWorlPosition();
-            Node node = Grid.Instance.GetNode(mousePosition);
-            if (node != null)
-            {
-                Debug.Log(node.GetInfo());
-                Entity entity = node.GetTopEntity();
-                if (entity == null)
-                {
-                    if (_onEntityDeselectedEvent != null)
-                        _onEntityDeselectedEvent.Raise();
-                }
-                else if (entity is Unit)
-                {
-                    _selectedUnit = (Unit)entity;
-                    if (_onUnitSelectedEvent != null)
-                        _onUnitSelectedEvent.Raise(_selectedUnit);
-                }
-                else
-                    _selectedUnit = null;
-
-            }
-        }
+        _currentState.UpdateState();
     }
 
     public void SwitchState(InputBaseState state)
     {
+        // Hay que mirar si esta funcion se puede elimirar, en InputBaseState existe SwitchSate
         _currentState = state;
-        state.EnterState(this);
+        state.EnterState();
     }
 
-    #region Move Action
-    private void SetUpMoveAction()
+    #region OnClick Events
+    public void SetMoveState() // called from button click event
     {
-        IAction moveAction = new MoveAction(_selectedUnit);
-        _actionHandler.ActionToHandle = moveAction;
+        SwitchState(_states.MoveAction());
     }
 
-    public void MoveAction()
+    public void SetAttackState() // called from button click event
     {
-        if (_selectedUnit == null)
-            return;
-
-        SetUpMoveAction();
-        _actionHandler.ExecuteCommand();
-    }
-
-    public void ShowMobilityArea()
-    {
-        if (_selectedUnit == null)
-            return;
-
-        SetUpMoveAction();
-        _actionHandler.ShowInfoCommand();
+        SwitchState(_states.AttackAction());
     }
     #endregion
 
-    private Vector3 GetMouseWorlPosition()
+    public Vector3 GetMouseWorldPosition()
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    public Vector3 GetMouseNodePosition()
+    {
+        return Grid.Instance.GetNodeWorldPosition(GetMouseWorldPosition());
     }
 }

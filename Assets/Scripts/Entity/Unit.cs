@@ -11,10 +11,13 @@ public class Unit : Entity
     private int _movementRange;
     [SerializeField]
     private int _attackRange;
+    [SerializeField]
+    private bool _hasMoved = false;
 
     public int Damage { get { return _damage; } }
     public int MovementRange { get { return _movementRange; } }
     public int AttackRange { get { return _attackRange; } }
+    public bool HasMoved { get { return _hasMoved; } set { _hasMoved = value; } }
 
     public override void ApplyDamage()
     {

@@ -10,6 +10,7 @@ public class Node
     private int _gridY;
     private int _distanceCost;
     private Node _nodeParent;
+    private List<Node> _neighbours;
     private bool _isWall;
     private Stack<Entity> _nodeEntities;
     private ResourceType _resource;
@@ -21,6 +22,7 @@ public class Node
     public int GridY { get { return _gridY; } set { _gridY = Mathf.Max(0, value); } }
     public int DistanceCost { get { return _distanceCost; } set { _distanceCost = value; } }
     public Node NodeParent { get { return _nodeParent; } set { _nodeParent = value; } }
+    public List<Node> Neighbours { get { return _neighbours; } set { _neighbours = value; } }
     public bool IsWall { get { return _isWall; } set { _isWall = value; } }
     public ResourceType Resource { get { return _resource; } set { _resource = value; } }
     #endregion
@@ -30,6 +32,9 @@ public class Node
         _position = position;
         _gridX = gridX;
         _gridY = gridY;
+        _distanceCost = 0;
+        _nodeParent = null;
+        _neighbours = new List<Node>();
         _nodeEntities = new Stack<Entity>();
     }
 

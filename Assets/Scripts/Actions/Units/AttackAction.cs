@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackAction : IAction
+public class AttackAction : BaseAction
 {
     public Unit Attacker { get; set; }
     public Unit Attacked { get; set; }
@@ -13,13 +13,9 @@ public class AttackAction : IAction
         this.Attacked = attacked;
     }
 
-    public void Execute()
+    public override void Execute()
     {
         Debug.Log("Unidad " + Attacker.Name + " ataca a la unidad " + Attacked.Name);
-    }
 
-    public void ShowActionInfo()
-    {
-        Debug.Log("Mostrando informacion AttackAction");
     }
 }

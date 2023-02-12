@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,16 +23,14 @@ public class UnitActionsUIManager : MonoBehaviour
 
     public void ShowEvent(Unit unit)
     {
-        Debug.Log("Mostrando acciones realizables por la unidad " + unit.Name);
         _actionsPanel.SetActive(true);
-        _moveButton.interactable = _isMoveActive;
+        _moveButton.interactable = !unit.HasMoved;
         _attackButton.interactable = _isAttackActive;
         _finalizeButton.interactable = _isFinalizeActive;
     }
 
     public void CleanUI()
     {
-        Debug.Log("Entidad deselccionada");
         _actionsPanel.SetActive(false);
     }
 }
