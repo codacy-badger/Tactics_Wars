@@ -28,7 +28,7 @@ public class Grid
             {
                 _nodes[x, y] = new Node(GetNodeWorldPosition(x, y), x, y);
             }
-        }   
+        }
     }
 
     public Vector3 GetNodeWorldPosition(Node node)
@@ -39,6 +39,13 @@ public class Grid
     public Vector3 GetNodeWorldPosition(int x, int y)
     {
         return new Vector3(x * _cellSize, y * _cellSize, 0) + _startPosition;
+    }
+
+    public Vector3 GetNodeWorldPosition(Vector3 position)
+    {
+        if (GetNode(position) == null)
+            throw new NullReferenceException();
+        return GetNodeWorldPosition(GetNode(position));
     }
 
     public Vector3Int GetNodeWorldIntPosition(int x, int y)
@@ -60,5 +67,55 @@ public class Grid
         int y = Mathf.FloorToInt(position.y - _startPosition.y) / _cellSize;
 
         return GetNode(x, y);
+    }
+
+    public void SetNodesNeighbours()
+    {
+        for (int x = 0; x < _width; x++)
+        {
+            for (int y = 0; y < _height; y++)
+            {
+                _nodes[x, y].Neighbours = GetNodeNeighbours(_nodes[x, y]);
+            }
+        }
+    }
+
+    private List<Node> GetNodeNeighbours(Node node)
+    {
+        List<Node> neighbours = new List<Node>();
+
+        // Up
+        Node up = GetNode(node.GridX, node.GridY + 1);
+        if (up != null)
+        {
+            if (!up.IsWall)
+                neighbours.Add(up);
+        }
+
+        // Down
+        Node down = GetNode(node.GridX, node.GridY - 1);
+        if (down != null)
+        {
+            if (!down.IsWall)
+                neighbours.Add(down);
+        }
+
+        // Left
+        Node left = GetNode(node.GridX - 1, node.GridY);
+        if (left != null)
+        {
+            if (!left.IsWall)
+                neighbours.Add(left);
+        }
+
+        // Right
+        Node right = GetNode(node.GridX + 1, node.GridY);
+        if (right != null)
+        {
+            if (!right.IsWall)
+                neighbours.Add(right);
+        }
+
+        return neighbours;
     }
 }
