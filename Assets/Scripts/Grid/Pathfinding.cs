@@ -1,27 +1,30 @@
 using System.Linq;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Pathfinding
+public class Pathfinding : MonoBehaviour
 {
-    private static HashSet<Node> _nodesToReset = new HashSet<Node>();
-    private static Node _initialNode;
+    private static Pathfinding _instance;
+    private HashSet<Node> _nodesToReset = new HashSet<Node>();
+    private Node _initialNode;
 
-    public static List<Vector3> GetMovementArea(Vector3 initialPos, int moveCost, int maxDistance)
+    public static Pathfinding Instance { get { return _instance; } }
+
+    private void Awake()
     {
-        HashSet<Vector3> walkableArea = new HashSet<Vector3>();
+        _instance = this;
+    }
+
+    private HashSet<Node> GetArea(Vector3 initialPos, int moveCost, int maxDistance, Func<Node, HashSet<Node>> getNeighbours)
+    {
+        HashSet<Node> area = new HashSet<Node>();
         ResetVisitedNodes();
         _initialNode = Grid.Instance.GetNode(initialPos);
 
-        if (_initialNode.GetTopEntity() == null)
-            return new List<Vector3>();
-        if (_initialNode.GetTopEntity() is not Unit)
-            return new List<Vector3>();
-
-        TeamEnum unitTeam = _initialNode.GetTopEntity().Team;
         _nodesToReset.Add(_initialNode);
 
-        HashSet<Node> neighbours = GetNodeNeighbours(_initialNode);
+        HashSet<Node> neighbours = getNeighbours(_initialNode);
         HashSet<Node> tempNeighbours = new HashSet<Node>();
 
         while (neighbours.Count > 0)
@@ -32,21 +35,34 @@ public static class Pathfinding
                 int nodeCost = node.DistanceCost;
 
                 node.DistanceCost = parentCost + moveCost;
-                if (node.GetTopEntity() is not Unit) // GetNodeNeighbours checks the team is the same
-                    walkableArea.Add(node.Position);
+                area.Add(node);
                 if (node.DistanceCost < maxDistance)
                 {
-                    tempNeighbours.UnionWith(GetNodeNeighbours(node));
+                    tempNeighbours.UnionWith(getNeighbours(node));
                 }
             }
             neighbours = tempNeighbours;
             tempNeighbours = new HashSet<Node>();
         }
 
-        return walkableArea.ToList();
+        return area;
     }
 
-    public static List<Vector3> CalculatePositionsPath(Vector3 finalPosition)
+    #region Move Action
+    public List<Vector3> GetMovementArea(Vector3 initialPos, int moveCost, int maxDistance)
+    {
+        List<Vector3> walkableArea = new List<Vector3>();
+
+        foreach (Node node in GetArea(initialPos, moveCost, maxDistance, GetNeighboursMoveAction))
+        {
+            if (node.GetTopEntity() is not Unit)
+                walkableArea.Add(node.Position);
+        }
+
+        return walkableArea;
+    }
+
+    public List<Vector3> CalculatePositionsPath(Vector3 finalPosition)
     {
         List<Vector3> positionsPath = new List<Vector3>();
 
@@ -59,13 +75,13 @@ public static class Pathfinding
         return positionsPath;
     }
 
-    private static List<Node> CalculateNodePath(Vector3 finalPosition)
+    private List<Node> CalculateNodePath(Vector3 finalPosition)
     {
         Node node = Grid.Instance.GetNode(finalPosition);
         return CalculateNodePath(node);
     }
 
-    private static List<Node> CalculateNodePath(Node node)
+    private List<Node> CalculateNodePath(Node node)
     {
         if (node.NodeParent == null)
         {
@@ -80,7 +96,7 @@ public static class Pathfinding
         }
     }
 
-    private static HashSet<Node> GetNodeNeighbours(Node currentNode)
+    private HashSet<Node> GetNeighboursMoveAction(Node currentNode)
     {
         HashSet<Node> neighbours = new HashSet<Node>();
 
@@ -103,8 +119,43 @@ public static class Pathfinding
 
         return neighbours;
     }
+    #endregion
 
-    private static void ResetVisitedNodes()
+    #region Attack Action
+    public List<Vector3> GetAttackArea(Vector3 initialPos, int attackRange)
+    {
+        List<Vector3> attackArea = new List<Vector3>();
+
+        foreach (Node node in GetArea(initialPos, 1, attackRange, GetNeighboursAttackAction))
+        {
+            if (node.GetTopEntity() == null)
+                continue;
+
+            if (node.GetTopEntity().Team != _initialNode.GetTopEntity().Team)
+                attackArea.Add(node.Position);
+        }
+
+        return attackArea;
+    }
+
+    private HashSet<Node> GetNeighboursAttackAction(Node currentNode)
+    {
+        HashSet<Node> neighbours = new HashSet<Node>();
+        foreach (Node node in currentNode.Neighbours)
+        {
+            if (!node.Equals(_initialNode) && !_nodesToReset.Contains(node))
+            {
+                node.NodeParent = currentNode;
+                neighbours.Add(node);
+                _nodesToReset.Add(node);
+            }
+        }
+
+        return neighbours;
+    }
+    #endregion
+
+    private void ResetVisitedNodes()
     {
         foreach (Node node in _nodesToReset)
         {

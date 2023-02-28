@@ -18,12 +18,12 @@ public class InputMoveState : InputBaseState
         if (Context.SelectedUnit == null)
             return;
 
-        Debug.Log("Entering <color=yellow>Move</color> state");
+        Debug.Log("<color=yellow>Move</color>: Entering the state");
         Vector3 unitPosition = Context.SelectedUnit.transform.position;
         int moveCost = 1;
         int maxDistance = Context.SelectedUnit.MovementRange;
 
-        _moveAreaPositions = Pathfinding.GetMovementArea(unitPosition, moveCost, maxDistance);
+        _moveAreaPositions = Pathfinding.Instance.GetMovementArea(unitPosition, moveCost, maxDistance);
         Context.UpdateActionAreaEvent.Raise(_moveAreaPositions);
     }
 
@@ -67,13 +67,13 @@ public class InputMoveState : InputBaseState
                 if (mousePosition != Vector3.zero && _moveAreaPositions.Contains(mousePosition))
                 {
                     // needs to perform GetMovementArea (EnterState)
-                    _arrowPathPositions = Pathfinding.CalculatePositionsPath(Context.GetMouseNodePosition());
+                    _arrowPathPositions = Pathfinding.Instance.CalculatePositionsPath(mousePosition);
                     Context.UpdateMovementArrowEvent.Raise(_arrowPathPositions);
                 }
             }
             catch (NullReferenceException ex)
             {
-                Debug.Log(ex.ToString() + ": Ratón fuera del grid");
+                Debug.LogWarning(ex.ToString() + ": Ratón fuera del grid");
             }
         }
     }

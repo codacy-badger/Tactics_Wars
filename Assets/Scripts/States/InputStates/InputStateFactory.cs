@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class InputStateFactory
 {
     private InputManager _context;
@@ -20,6 +22,21 @@ public class InputStateFactory
     public InputBaseState AttackAction()
     {
         return new InputAttackState(_context, this);
+    }
+
+    public InputBaseState BuildAction(EntityInfoSO buildingInfo)
+    {
+        return new InputBuildState(_context, this, buildingInfo);
+    }
+
+    public InputBaseState RepairAction()
+    {
+        return new InputRepairState(_context, this);
+    }
+
+    public InputBaseState FinalizeUnit()
+    {
+        return new InputFinalizeUnitState(_context, this);
     }
 
     public InputBaseState Waiting(BaseAction action)

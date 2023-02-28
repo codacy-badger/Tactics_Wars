@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "NewResourceType", menuName = "Resource Type")]
-public class ResourceType : ScriptableObject
+public class ResourceTypeSO : ScriptableObject
 {
-    public string ResourceName;
+    public ResourceType ResourceType;
     public TileBase ResourceTile;
 }

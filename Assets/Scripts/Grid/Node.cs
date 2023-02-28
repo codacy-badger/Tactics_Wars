@@ -12,7 +12,9 @@ public class Node
     private Node _nodeParent;
     private List<Node> _neighbours;
     private bool _isWall;
-    private Stack<Entity> _nodeEntities;
+    private bool _canBuildUB;
+    private bool _canBuilFarm;
+    private Entity[] _nodeEntities;
     private ResourceType _resource;
     #endregion
 
@@ -24,6 +26,8 @@ public class Node
     public Node NodeParent { get { return _nodeParent; } set { _nodeParent = value; } }
     public List<Node> Neighbours { get { return _neighbours; } set { _neighbours = value; } }
     public bool IsWall { get { return _isWall; } set { _isWall = value; } }
+    public bool CanBuildUB { get { return _canBuildUB; } set { _canBuildUB = value; } }
+    public bool CanBuildFarm { get { return _canBuilFarm; } set { _canBuilFarm = value; } }
     public ResourceType Resource { get { return _resource; } set { _resource = value; } }
     #endregion
 
@@ -35,57 +39,57 @@ public class Node
         _distanceCost = 0;
         _nodeParent = null;
         _neighbours = new List<Node>();
-        _nodeEntities = new Stack<Entity>();
+        _nodeEntities = new Entity[2];
     }
 
     public Entity GetTopEntity()
     {
-        if (_nodeEntities.Count > 0)
-            return _nodeEntities.Peek();
+        if (_nodeEntities[1] != null)
+            return _nodeEntities[1];
+        else if (_nodeEntities[0] != null)
+            return _nodeEntities[0];
         else
             return null;
     }
 
     public Entity RemoveTopEntity()
     {
-        if (_nodeEntities.Count > 0)
-            return _nodeEntities.Pop();
+        Entity removedEntity = null;
+        if (_nodeEntities[1] != null)
+        {
+            removedEntity = _nodeEntities[1];
+            _nodeEntities[1] = null;
+            return removedEntity;
+        }  
+        else if (_nodeEntities[0] != null)
+        {
+            removedEntity = _nodeEntities[0];
+            _nodeEntities[0] = null;
+            return removedEntity;
+        }  
         else
-            return null;
+            return removedEntity;
     }
 
     public void AddEntity(Entity entity)
     {
-        if (_nodeEntities.Count < 2)
-            _nodeEntities.Push(entity);
+        if (_nodeEntities[1] == null && entity as Unit)
+            _nodeEntities[1] = entity;
+        else if (_nodeEntities[0] == null)
+            _nodeEntities[0] = entity;
         else
-            Debug.LogError("Into de añadir más de dos entidades al nodo (" + GridX + ", " + GridY + ")");
+            Debug.LogError($"Intento de añadir más de dos entidades al nodo ({GridX}, {GridY})");
     }
 
-    public string GetInfo()
+    public Entity GetEntity(int index)
     {
-        string info = "(" + GridX + ", " + GridY + ").";
-        if (IsWall)
-            info += " Es pared.";
-        else
-            info += " No es pared.";
+        if (index > 1)
+            return null;
+        return _nodeEntities[index];
+    }
 
-        if (Resource != null)
-            info += " Recurso del tipo: " + Resource.ResourceName + ".";
-        else
-            info += " No hay recurso.";
-
-        if (_nodeEntities.Count > 0)
-        {
-            Entity entity = _nodeEntities.Peek();
-            if (entity is Unit)
-                info += " Hay una unidad: " + entity.Name;
-            else if (entity is Building)
-                info += " Hay un edificio: " + entity.Name;
-        }
-        else
-            info += " No hay unidades.";
-
-        return info;
+    public void ShowInfo()
+    {
+        Debug.Log($"Edificio: {_nodeEntities[0]?.Name}. Unidad: {_nodeEntities[1]?.Name}. Recurso: {_resource}. Edf Entidad: {_canBuildUB}");
     }
 }

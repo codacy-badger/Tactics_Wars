@@ -25,9 +25,9 @@ class GridManager : MonoBehaviour
 
     [Header("Resource Types")]
     [SerializeField]
-    private ResourceType _goldResource;
+    private ResourceTypeSO _goldResource;
     [SerializeField]
-    private ResourceType _foodResource;
+    private ResourceTypeSO _foodResource;
 
     [Header("Game Events")]
     [SerializeField]
@@ -65,9 +65,11 @@ class GridManager : MonoBehaviour
                 else if (resourceTile != null)
                 {
                     if (resourceTile.Equals(_goldResource.ResourceTile))
-                        node.Resource = _goldResource;
+                        node.Resource = _goldResource.ResourceType;
                     else if (resourceTile.Equals(_foodResource.ResourceTile))
-                        node.Resource = _foodResource;
+                        node.Resource = _foodResource.ResourceType;
+                    else
+                        node.Resource = ResourceType.NONE;
                 }
 
                 Grid.Instance.SetNodesNeighbours();

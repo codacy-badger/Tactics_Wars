@@ -1,0 +1,33 @@
+using UnityEngine;
+
+public class BuildAction : BaseAction
+{
+    private EntityInfoSO _buildingInfo;
+    private Unit _selectedUnit;
+    private GameObject _parent;
+
+    public BuildAction(EntityInfoSO buildingInfo, Unit selectedUnit, GameObject parent)
+    {
+        _buildingInfo = buildingInfo;
+        _selectedUnit = selectedUnit;
+        _parent = parent;
+    }
+
+    public override void Execute()
+    {
+        Debug.Log($"Quitamos al jugador {_buildingInfo.FoodAmount} de comida y {_buildingInfo.GoldAmount} de oro.");
+        Entity building = GameObject.Instantiate(
+            _buildingInfo.EntityPrefab,
+            _selectedUnit.transform.position,
+            Quaternion.identity).GetComponent<Entity>();
+        building.transform.parent = _parent.transform;
+
+        if (building != null)
+        {
+            Node node = Grid.Instance.GetNode(_selectedUnit.transform.position);
+            node.AddEntity(building);
+        }
+
+        _selectedUnit.HasFinished = true;
+    }
+}

@@ -12,7 +12,7 @@ public class InputWaitingState : InputBaseState
 
     public override void EnterState()
     {
-        Debug.Log("Entering <color=cyan>Waiting</color> state");
+        Debug.Log("<color=cyan>Waiting</color>: Entering the state");
         Context.SelectedUnit = null;
         Context.OnEntityDeselectedEvent.Raise();
     }

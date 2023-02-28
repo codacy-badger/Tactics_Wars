@@ -18,7 +18,14 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     private ListVector3Event _updateMovementArrowEvent;
 
+    [Header("Entity Settings")]
     [SerializeField]
+    private GameObject _unitsParent;
+    [SerializeField]
+    private GameObject _buildingsParent;
+
+    private Camera _camera;
+
     private Unit _selectedUnit;
 
     private ActionHandler _actionHandler;
@@ -33,8 +40,9 @@ public class InputManager : MonoBehaviour
     public VoidEvent OnEntityDeselectedEvent { get { return _onEntityDeselectedEvent; } }
     public ListVector3Event UpdateActionAreaEvent { get { return _updateActionAreaEvent; } }
     public ListVector3Event UpdateMovementArrowEvent { get { return _updateMovementArrowEvent; } }
+    public GameObject UnitsParent { get { return _unitsParent; } }
+    public GameObject BuildingsParent { get { return _buildingsParent; } }
     public InputBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
-    //public InputStateFactory States { get { return _states; } set { _states = value; } }
     public ActionHandler ActionHandler { get { return _actionHandler; } set { _actionHandler = value; } }
     #endregion
 
@@ -44,35 +52,60 @@ public class InputManager : MonoBehaviour
         _states = new InputStateFactory(this);
         _currentState = _states.NoAction();
         _currentState.EnterState();
+        _camera = Camera.main;
     }
 
     void Update()
     {
         _currentState.UpdateState();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mousePosition = GetMouseWorldPosition();
+            Node node = Grid.Instance.GetNode(mousePosition);
+            if (node != null)
+            {
+                node.ShowInfo();
+            }
+        }
     }
 
     public void SwitchState(InputBaseState state)
     {
-        // Hay que mirar si esta funcion se puede elimirar, en InputBaseState existe SwitchSate
         _currentState = state;
         state.EnterState();
     }
 
     #region OnClick Events
-    public void SetMoveState() // called from button click event
+    public void SetMoveState()
     {
         SwitchState(_states.MoveAction());
     }
 
-    public void SetAttackState() // called from button click event
+    public void SetAttackState()
     {
         SwitchState(_states.AttackAction());
+    }
+
+    public void SetBuildState(EntityInfoSO buildingInfo)
+    {
+        SwitchState(_states.BuildAction(buildingInfo));
+    }
+
+    public void SetRepairState()
+    {
+        SwitchState(_states.RepairAction());
+    }
+
+    public void FinalizeUnit()
+    {
+        SwitchState(_states.FinalizeUnit());
     }
     #endregion
 
     public Vector3 GetMouseWorldPosition()
     {
-        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        return _camera.ScreenToWorldPoint(Input.mousePosition);
     }
 
     public Vector3 GetMouseNodePosition()
