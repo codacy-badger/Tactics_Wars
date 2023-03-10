@@ -19,18 +19,26 @@ public class MoveAction : BaseAction
 
     public override void Execute()
     {
-        UpdateEntityNodes();
+        if (!UpdateNodes())
+            return;
         _selectedUnit.HasMoved = true;
         _selectedUnit.StartCoroutine(MovementCoroutine());
     }
 
-    private void UpdateEntityNodes()
+    private bool UpdateNodes()
     {
+        if (_positions.Count == 0)
+            return false;
+        if (Grid.Instance.GetNode(_positions[^1]) == null)
+            return false;
+
         Node currentNode = Grid.Instance.GetNode(_selectedUnit.transform.position);
         currentNode.RemoveTopEntity();
 
         Node nextNode = Grid.Instance.GetNode(_positions[^1]);
         nextNode.AddEntity(_selectedUnit);
+
+        return true;
     }
 
     private IEnumerator MovementCoroutine()

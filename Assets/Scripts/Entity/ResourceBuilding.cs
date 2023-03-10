@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ResourceBuilding : Entity
+public class ResourceBuilding : Building
 {
     [Header("Resource Building Settings")]
     [SerializeField]
@@ -10,11 +10,6 @@ public class ResourceBuilding : Entity
 
     public ResourceType ResourceType { get { return _resourceType; } }
     public int ResourceAmount { get { return _resourceAmount; } }
-
-    public override void EntityDeath()
-    {
-        Destroy(gameObject);
-    }
 }
 
 public enum ResourceType

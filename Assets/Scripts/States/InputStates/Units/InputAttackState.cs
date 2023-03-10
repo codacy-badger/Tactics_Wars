@@ -17,7 +17,9 @@ public class InputAttackState : InputBaseState
         _attackArea = Pathfinding.Instance.GetAttackArea(
             Context.SelectedUnit.transform.position,
             Context.SelectedUnit.AttackRange);
-        Context.UpdateActionAreaEvent.Raise(_attackArea);
+
+        if (Context.UpdateActionAreaEvent != null)
+            Context.UpdateActionAreaEvent.Raise(_attackArea);
     }
 
     public override void UpdateState()

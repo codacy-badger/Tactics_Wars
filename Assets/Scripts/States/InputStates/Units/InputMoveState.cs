@@ -12,13 +12,13 @@ public class InputMoveState : InputBaseState
 
     public override void EnterState()
     {
+        Debug.Log("<color=yellow>Move</color>: Entering the state");
+
         if (Context.UpdateActionAreaEvent == null)
             return;
-        // vovler quizas al estado de no action para mitigar futuros bugs ???
         if (Context.SelectedUnit == null)
             return;
-
-        Debug.Log("<color=yellow>Move</color>: Entering the state");
+        
         Vector3 unitPosition = Context.SelectedUnit.transform.position;
         int moveCost = 1;
         int maxDistance = Context.SelectedUnit.MovementRange;

@@ -23,13 +23,13 @@ public class AttackAction : BaseAction
     public void ApplyDamage()
     {
         AnimationEventSystem.AnimationFinishedEvent -= ApplyDamage;
-        _defender.ApplyDamage(CalculateDamage()); // TODO - aplicar el daño segun tipo de entidad
+        _defender.ApplyDamage(CalculateDamage());
         if (_defender is Unit)
         {
             Unit defenderUnit = _defender as Unit;
-            defenderUnit.Animator.SetTrigger("Hurt");
+            defenderUnit.Animator?.SetTrigger("Hurt");
         }
-        Debug.Log($"La unidad {_attacker.Name} ataca a la entidad {_defender.Name}");
+
         _attacker.HasFinished = true;
         ActionFinished?.Invoke();
     }
@@ -42,7 +42,7 @@ public class AttackAction : BaseAction
         if ((_defender as Unit).Weaknesses.Contains(_attacker.UnitType))
             return Mathf.RoundToInt(_attacker.Damage * (1 + DAMAGE_COEFFICIENT));
         else if (_attacker.Weaknesses.Contains((_defender as Unit).UnitType))
-            return Mathf.RoundToInt(_attacker.Damage * DAMAGE_COEFFICIENT);
+            return Mathf.RoundToInt(_attacker.Damage * (1 - DAMAGE_COEFFICIENT));
         else
             return _attacker.Damage;
     }

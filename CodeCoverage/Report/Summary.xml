@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageReport scope="Summary">
+  <Summary>
+    <Generatedon>10/03/2023 - 16:30:55</Generatedon>
+    <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
+    <Assemblies>1</Assemblies>
+    <Classes>44</Classes>
+    <Files>43</Files>
+    <Coveredlines>708</Coveredlines>
+    <Uncoveredlines>447</Uncoveredlines>
+    <Coverablelines>1155</Coverablelines>
+    <Totallines>2139</Totallines>
+    <Linecoverage>61.2</Linecoverage>
+    <Coveredbranches>0</Coveredbranches>
+    <Totalbranches>0</Totalbranches>
+  </Summary>
+  <Coverage>
+    <Assembly name="Scripts" classes="44" coverage="61.2" coveredlines="708" coverablelines="1155" totallines="2152" branchcoverage="" coveredbranches="0" totalbranches="0">
+      <Class name="A" coverage="100" coveredlines="2" coverablelines="2" totallines="13" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="ActionAreaManager" coverage="0" coveredlines="0" coverablelines="64" totallines="166" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="ActionHandler" coverage="100" coveredlines="4" coverablelines="4" totallines="13" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="An" coverage="100" coveredlines="5" coverablelines="5" totallines="13" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="AnimationEventSystem" coverage="0" coveredlines="0" coverablelines="3" totallines="13" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="AttackAction" coverage="79.3" coveredlines="23" coverablelines="29" totallines="49" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="BaseAction" coverage="25" coveredlines="1" coverablelines="4" totallines="15" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="BaseGameEvent[T]" coverage="0" coveredlines="0" coverablelines="15" totallines="29" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="BaseGameEventEditor[T,E]" coverage="0" coveredlines="0" coverablelines="8" totallines="19" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="BaseGameEventListener[T,E,EUR]" coverage="0" coveredlines="0" coverablelines="17" totallines="39" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="BuildAction" coverage="90" coveredlines="18" coverablelines="20" totallines="35" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Building" coverage="0" coveredlines="0" coverablelines="3" totallines="7" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="BuildingsMenuUI" coverage="0" coveredlines="0" coverablelines="11" totallines="33" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="EntitiesInitializer" coverage="0" coveredlines="0" coverablelines="21" totallines="46" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Entity" coverage="96.6" coveredlines="29" coverablelines="30" totallines="71" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="EntityInfoSOBuilder" coverage="100" coveredlines="22" coverablelines="22" totallines="41" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Grid" coverage="92.4" coveredlines="98" coverablelines="106" totallines="125" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="GridManager" coverage="75" coveredlines="39" coverablelines="52" totallines="89" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="GridManagerBuilder" coverage="100" coveredlines="11" coverablelines="11" totallines="22" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Healthbar" coverage="0" coveredlines="0" coverablelines="13" totallines="33" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputAttackState" coverage="15.7" coveredlines="6" coverablelines="38" totallines="54" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputBaseState" coverage="93.7" coveredlines="15" coverablelines="16" totallines="30" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputBuildState" coverage="78.5" coveredlines="11" coverablelines="14" totallines="26" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputFinalizeUnitState" coverage="81.8" coveredlines="9" coverablelines="11" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputManager" coverage="67.2" coveredlines="37" coverablelines="55" totallines="115" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputManagerBuilder" coverage="73.3" coveredlines="11" coverablelines="15" totallines="28" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputMoveState" coverage="10.5" coveredlines="6" coverablelines="57" totallines="80" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputNoActionState" coverage="27.2" coveredlines="9" coverablelines="33" totallines="42" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputRepairState" coverage="76.9" coveredlines="10" coverablelines="13" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputStateFactory" coverage="88" coveredlines="22" coverablelines="25" totallines="46" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="InputWaitingState" coverage="0" coveredlines="0" coverablelines="13" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="MoveAction" coverage="93.4" coveredlines="43" coverablelines="46" totallines="76" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Node" coverage="92.7" coveredlines="64" coverablelines="69" totallines="114" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="NodeBuilder" coverage="65.3" coveredlines="17" coverablelines="26" totallines="47" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Pathfinding" coverage="99.1" coveredlines="122" coverablelines="123" totallines="182" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="RepairAction" coverage="100" coveredlines="11" coverablelines="11" totallines="21" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="ResourceBuilding" coverage="0" coveredlines="0" coverablelines="2" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="UISelectBuildings" coverage="0" coveredlines="0" coverablelines="3" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="Unit" coverage="67.7" coveredlines="21" coverablelines="31" totallines="79" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="UnitActionsUIManager" coverage="0" coveredlines="0" coverablelines="70" totallines="135" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="UnitBuilder" coverage="100" coveredlines="27" coverablelines="27" totallines="49" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="UnitBuilding" coverage="0" coveredlines="0" coverablelines="1" totallines="11" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="UnitBuildingBuilder" coverage="100" coveredlines="15" coverablelines="15" totallines="28" branchcoverage="" coveredbranches="0" totalbranches="0" />
+      <Class name="VoidEvent" coverage="0" coveredlines="0" coverablelines="1" totallines="7" branchcoverage="" coveredbranches="0" totalbranches="0" />
+    </Assembly>
+  </Coverage>
+</CoverageReport>
