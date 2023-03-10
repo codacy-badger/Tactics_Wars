@@ -20,7 +20,9 @@ public class BuildAction : BaseAction
             _buildingInfo.EntityPrefab,
             _selectedUnit.transform.position,
             Quaternion.identity).GetComponent<Entity>();
-        building.transform.parent = _parent.transform;
+
+        if (_parent != null)
+            building.transform.parent = _parent.transform;
 
         if (building != null)
         {

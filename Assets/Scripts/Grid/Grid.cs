@@ -1,8 +1,6 @@
-using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class Grid
 {
@@ -13,6 +11,9 @@ public class Grid
     private int _height;
     private int _cellSize;
     private Vector3 _startPosition;
+
+    public int Width { get { return _width; } }
+    public int Height { get { return _height; } }
 
     public Grid(int width, int height, int cellSize, Vector3 startPoint)
     {
@@ -38,7 +39,10 @@ public class Grid
 
     public Vector3 GetNodeWorldPosition(int x, int y)
     {
-        return new Vector3(x * _cellSize, y * _cellSize, 0) + _startPosition;
+        if (x >= 0 && y >= 0 && x < _width && y < _height)
+            return new Vector3(x * _cellSize, y * _cellSize, 0) + _startPosition;
+        else
+            throw new NullReferenceException();
     }
 
     public Vector3 GetNodeWorldPosition(Vector3 position)

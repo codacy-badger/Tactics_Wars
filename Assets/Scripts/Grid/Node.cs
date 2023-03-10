@@ -42,6 +42,15 @@ public class Node
         _nodeEntities = new Entity[2];
     }
 
+    public Node(Vector3 position, int gridX, int gridY, Unit unit, Building building)
+        : this(position, gridX, gridY)
+    {
+        if (unit != null)
+            _nodeEntities[1] = unit;
+        if (building != null)
+            _nodeEntities[0] = building;
+    }
+
     public Entity GetTopEntity()
     {
         if (_nodeEntities[1] != null)
@@ -71,14 +80,24 @@ public class Node
             return removedEntity;
     }
 
-    public void AddEntity(Entity entity)
+    public bool AddEntity(Entity entity)
     {
         if (_nodeEntities[1] == null && entity as Unit)
+        {
             _nodeEntities[1] = entity;
+            return true;
+        } 
         else if (_nodeEntities[0] == null)
+        {
             _nodeEntities[0] = entity;
+            return true;
+        }   
         else
-            Debug.LogError($"Intento de añadir más de dos entidades al nodo ({GridX}, {GridY})");
+        {
+            Debug.LogWarning($"Intento de añadir más de dos entidades al nodo ({GridX}, {GridY})");
+            return false;
+        }
+            
     }
 
     public Entity GetEntity(int index)

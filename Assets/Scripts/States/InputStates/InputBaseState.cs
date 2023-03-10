@@ -24,7 +24,6 @@ public abstract class InputBaseState
 
     protected void SwitchState(InputBaseState newState)
     {
-        // Se podria definir un metodo ExitState con la logica necesaria para salir del estado
         newState.EnterState();
         _context.CurrentState = newState;
     }

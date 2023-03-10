@@ -1,19 +1,25 @@
-using System.Linq;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pathfinding : MonoBehaviour
+public sealed class Pathfinding
 {
     private static Pathfinding _instance;
     private HashSet<Node> _nodesToReset = new HashSet<Node>();
     private Node _initialNode;
 
-    public static Pathfinding Instance { get { return _instance; } }
+    private Pathfinding() { }
 
-    private void Awake()
+    public static Pathfinding Instance
     {
-        _instance = this;
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new Pathfinding();
+            }
+            return _instance;
+        }
     }
 
     private HashSet<Node> GetArea(Vector3 initialPos, int moveCost, int maxDistance, Func<Node, HashSet<Node>> getNeighbours)
@@ -52,6 +58,11 @@ public class Pathfinding : MonoBehaviour
     public List<Vector3> GetMovementArea(Vector3 initialPos, int moveCost, int maxDistance)
     {
         List<Vector3> walkableArea = new List<Vector3>();
+
+        if (moveCost < 1)
+            return walkableArea;
+        if (maxDistance < 1)
+            return walkableArea;
 
         foreach (Node node in GetArea(initialPos, moveCost, maxDistance, GetNeighboursMoveAction))
         {
@@ -100,12 +111,12 @@ public class Pathfinding : MonoBehaviour
     {
         HashSet<Node> neighbours = new HashSet<Node>();
 
-        Entity entity = _initialNode.GetTopEntity();
+        Entity entityInNode = _initialNode.GetTopEntity();
         foreach (Node node in currentNode.Neighbours)
         {
-            if (node.GetTopEntity() != null && entity != null)
+            if (node.GetTopEntity() != null)
             {
-                if (node.GetTopEntity().Team != entity.Team)
+                if (node.GetTopEntity().Team != (entityInNode != null ? entityInNode.Team : null))
                     continue;
             }
             
@@ -125,6 +136,9 @@ public class Pathfinding : MonoBehaviour
     public List<Vector3> GetAttackArea(Vector3 initialPos, int attackRange)
     {
         List<Vector3> attackArea = new List<Vector3>();
+
+        if (attackRange < 1)
+            return attackArea;
 
         foreach (Node node in GetArea(initialPos, 1, attackRange, GetNeighboursAttackAction))
         {
